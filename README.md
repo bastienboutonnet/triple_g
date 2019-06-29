@@ -148,10 +148,32 @@ This is basically a moment to tell git, which of the two changes you want to kee
 **Conflict resolution is going to be different almost everytime, and it's going to be hard to explain it here. So if this happens, you should have a try or ask around for some guidance on how to resolve your first merge conflict.** We've all been there...
 
 ## The Less Basic Stuff. Isolation and Collaboration.
-Ok, so now that we've covered the basic mechanics of how a change is kept track of and how this change is propagated to other collaborators. We'll complicate things a little. And for a good reason!
+Ok, so now that we've covered the basic mechanics of how a change is kept track of and how this change is propagated to other collaborators. We'll complicate things a little, to allow for smooth collaboration between people on a single repo.
 
 ### Isolation Through Branching
+So far, we didn't really worry about a key aspect: What happens when you push your code back to master? Well 2 pretty ugly things can happen:
+ - a system that uses some of the code you just potentially affected might break, due to a bug or a breaking change.
+- a user who was also working on a piece of code you may have affected might see their code break or run into conflicts.
+
+For these two main reasons, and also to allow clear traceable development, we work using what git calls **branches**. Branches allow any one to isolate themselves from the main strand of code or **trunk** to push the tree analogy a bit further.
+When you "branch out" you enter a bit of a parallel reality where all the code that happened up to the moment you branch out is available to your knowledge and use but new code won't (at least for a while) affect the main universe.
+
+Here at TripActions, most users do not have the ability to push changes directly to master, therefore a branch-oriented worflow is actually what you'll end up doing.
+
+To branch out, **make sure you have a recent copy of master**
+```
+git checkout master
+git pull
+```
+and then create your branch. In general, you will also want to move to that branch after creating it so here is the command you should run for both of these things to happen:
+```
+git checkout -b <your_name>/<your_feature>
+```
+The `-b` takes care of running a `git branch <your_name>/<your_feature>` in the backgroun. You would replace of course the text set in `<>`. In the data team we follow the convention outlined above. For more detail over our Git conventions [head over to this discourse article](https://discourse.tripactions.systems/t/the-ultimate-branching-pull-request-and-review-guide/251)
+
+Once you have done that you can code away, break as much stuff as you want etc. Chances are however that you won't want to stay in your pre-historical buble for ever so we'll discuss how to keep up to date with the main universe in the following section.
 
 ### Keeping up to date (Merging & Rebasing)
+
 
 ### Keeping Things Clean (Squashing & Fixup Workflow)
