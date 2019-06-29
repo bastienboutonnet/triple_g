@@ -20,7 +20,7 @@ In the current setup of the organisation the **best** way to get any of the repo
 
 - If all of the above is satisfied, what you'll wanna do is **clone** a repository. Here's a toy repo you can clone. Don't worry there's no bad stuff on there. Oh also, this is a public repo so you won't have to worry about SSH and all that. By the way, the first line will make you clone the repo right in your home directory. If you have a better place just ignore that command and navigate wherever you want on your harddrive.
 
-```
+```bash
 > cd ~
 > git clone https://github.com/bastienboutonnet/triple_g
 > cd triple_g
@@ -162,12 +162,12 @@ Here at TripActions, most users do not have the ability to push changes directly
 
 To branch out, **make sure you have a recent copy of master**
 ```
-git checkout master
-git pull
+> git checkout master
+> git pull
 ```
 and then create your branch. In general, you will also want to move to that branch after creating it so here is the command you should run for both of these things to happen:
 ```
-git checkout -b <your_name>/<your_feature>
+> git checkout -b <your_name>/<your_feature>
 ```
 The `-b` takes care of running a `git branch <your_name>/<your_feature>` in the backgroun. You would replace of course the text set in `<>`. In the data team we follow the convention outlined above. For more detail over our Git conventions [head over to this discourse article](https://discourse.tripactions.systems/t/the-ultimate-branching-pull-request-and-review-guide/251)
 
