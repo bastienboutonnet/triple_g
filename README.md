@@ -151,6 +151,7 @@ This is basically a moment to tell git, which of the two changes you want to kee
 Ok, so now that we've covered the basic mechanics of how a change is kept track of and how this change is propagated to other collaborators. We'll complicate things a little, to allow for smooth collaboration between people on a single repo.
 
 ### Isolation Through Branching
+<!-- TODO: Provide a diagram of branching in that section -->
 So far, we didn't really worry about a key aspect: What happens when you push your code back to master? Well 2 pretty ugly things can happen:
  - a system that uses some of the code you just potentially affected might break, due to a bug or a breaking change.
 - a user who was also working on a piece of code you may have affected might see their code break or run into conflicts.
@@ -174,6 +175,32 @@ The `-b` takes care of running a `git branch <your_name>/<your_feature>` in the 
 Once you have done that you can code away, break as much stuff as you want etc. Chances are however that you won't want to stay in your pre-historical buble for ever so we'll discuss how to keep up to date with the main universe in the following section.
 
 ### Keeping up to date (Merging & Rebasing)
+Let's say you're building a feature that uses a function that got modified, maybe it takes an extra argument, it gives you some more stuff and you want to be able to use that new function in your new code. Since you branched out from master before that functionality was introduced you're, in a way, stuck in the past.
+
+So what options do you have to pick up that change?
+#### Merge `master` into your feature branch
+This is actually the most common and often preferred option. Essencially it consists in bringing back in to your branch some of the changes that happen on the master branch. This may seem confusing because you will still want to merge your feature branch into master when you're done developing your branch but actually that is totally fine. Git is smart enough to know not to duplicate things.
+So! Assuming you're on your branch you will want to do the following:
+```bash
+> git checkout master
+> git pull
+> git checkout <your_branch>
+> git merge master
+```
+Et voilà!
+So what just happened?
+<!-- TODO: Make a diagram -->
+
+#### Rebase your branch on `master`
+This method is a little bit less favourited, generally because people do not really understand the concept and are a bit scared of it.
+There's a good reason to this. It's a little bit less "safe", but it's really not that bad.
+
+It's **only unsafe** if you are not the only one working on your branch. Hence the golden rule of rebase
+>"No one shall rebase a shared branch"
+The explanation is a long one and it's better with lots of pictures and someone did it better than me so if you're curious head over to [this lovely article](https://www.freecodecamp.org/news/git-rebase-and-the-golden-rule-explained-70715eccc372/)
+
+So, how different is rebase to merge?
+Rebase, re bases your branch. It essentially moves the origin of your branch and it would look as if you branched from master **after**.
 
 
 ### Keeping Things Clean (Squashing & Fixup Workflow)
