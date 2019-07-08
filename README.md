@@ -200,7 +200,7 @@ It's **only unsafe** if you are not the only one working on your branch. Hence t
 The explanation is a long one and it's better with lots of pictures and someone did it better than me so if you're curious head over to [this lovely article](https://www.freecodecamp.org/news/git-rebase-and-the-golden-rule-explained-70715eccc372/)
 
 So, how different is rebase to merge?
-Rebase, re bases your branch. It essentially moves the origin of your branch and it would look as if you branched from master **after**.
+Rebase, re bases your branch. It essentially moves the origin of your branch and it would look as if you branched from master **after** breaking things here intentionally.
 
 
 ### Keeping Things Clean (Squashing & Fixup Workflow)
