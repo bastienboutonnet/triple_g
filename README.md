@@ -200,7 +200,91 @@ It's **only unsafe** if you are not the only one working on your branch. Hence t
 The explanation is a long one and it's better with lots of pictures and someone did it better than me so if you're curious head over to [this lovely article](https://www.freecodecamp.org/news/git-rebase-and-the-golden-rule-explained-70715eccc372/)
 
 So, how different is rebase to merge?
-Rebase, re bases your branch. It essentially moves the origin of your branch and it would look as if you branched from master **after** breaking things here intentionally.
+Rebase, re bases your branch. It essentially moves the origin of your branch and it would look as if you branched from master **after** the changes you wanted to bring in.
+Here's how you'd do a rebase from the master branch:
+```bash
+> git checkoutr master
+> git pull
+> git checkout <your_branch>
+> git rebase master
+```
+The two first steps ensure you have an up to date copy of master before performing your rebase.
+In theory, the rebase should happen smoothly unless you have to deal with conflicts. Again, it's a little bit hard to have a good coverage of what you would do in case of conflicts but if those arise, this is the flow of how conflicts during rebase can be dealt with:
+In case of conflicts git will display a message kind of like that one
+```bash
+First, rewinding head to replay your work on top of it...
+Applying: adding more info about conflict resolution
+Using index info to reconstruct a base tree...
+M       README.md
+Falling back to patching base and 3-way merge...
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+error: Failed to merge in the changes.
+Patch failed at 0001 adding more info about conflict resolution
+hint: Use 'git am --show-current-patch' to see the failed patch
 
+Resolve all conflicts manually, mark them as resolved with
+"git add/rm <conflicted_files>", then run "git rebase --continue".
+You can instead skip this commit: run "git rebase --skip".
+To abort and get back to the state before "git rebase", run "git rebase --abort".
+```
+At this point you will need to resolve the conflict in your editor of choice.
+- resolve (choose which change you want to keep)
+- hit save
+- do `git rebase --continue` as indicated in the message that git showed you.
+Git will move through the next commit and, you may hit another set of conflicts, resolve them and repeat. When you're done git should show you something like this:
+```bash
+Applying: adding more info about conflict resolution
+```
+👌🏻 There you have it!
 
 ### Keeping Things Clean (Squashing & Fixup Workflow)
+After working on a feature for a while it may be the case that you have a lot of commits that you may not necessarily want to push when you merge your branch to keep things clean on merge. This is when squashing comes in handy.
+
+#### Squash commits
+Squashing essncially let's you choose which commits you want to have in the lineage and which you want to "silence".
+In this example I made a few commits in a row that don't really make a ton of sense to send back to the trunk because they were maybe early commits or don't add a lot of value.
+```bash
+370ed01 ah shit I needed to add a bit more text
+3b3e73d add a bit more documentation
+65bbac5 adding more info about conflict resolution
+1a929be adding more info about conflict resolution
+dae892e (origin/master, master) making fake update
+```
+Let's say that I want to group all the commits into one, which was about adding information about conflict resolution (precisely commit `65bbac5`). I'll call a "rebase" at least one commit before the one I want to keep.
+To to this, I'll call a rebase and point it to the SHA of the last line (which in time came before all the other lines above)
+```bash
+> git rebase -i dae892e
+```
+The `-i` means the rebase will be interactive and something like this will pop up:
+```bash
+pick 65bbac5 adding more info about conflict resolution
+pick 3b3e73d add a bit more documentation
+pick 370ed01 ah shit I needed to add a bit more text
+pick 1a929be adding more info about conflict resolution
+pick ec86fbb add info about squashing
+
+# Rebase dae892e..ec86fbb onto dae892e (5 commands)
+```
+If I want to only retain the first commit I have to change `pick` to `squash` or `s`.
+```bash
+pick 65bbac5 adding more info about conflict resolution
+s 3b3e73d add a bit more documentation
+s 370ed01 ah shit I needed to add a bit more text
+s 1a929be adding more info about conflict resolution
+s ec86fbb add info about squashing
+
+# Rebase dae892e..ec86fbb onto dae892e (5 commands)
+```
+If you run `git log --online` again you'll see that all the commits you labelled to be squashed will have disappeared from the history.
+
+If you had already pushed some of the content to your remote branch and run `git status` you may be surprised that Git tells you that you need to `pull` changes from the remote. That's normal because, your remote still has all of these commits but you now have less so Git think's you're not up to date. Time to bring in **the force**.
+
+If you're sure that you want to push your changes you'll want to push with `--force` so that you can overrule the remote that is "ahead" of you:
+```bash
+> git push --force
+```
+**IMPORTANT:** The force should be used cautiously, it should never be used to push to master and you should keep it for a branch that you're working on and not sharing to avoid boo boos. If you're not sure, it's usually fine to ask.
+
+#### Fixup Workflow
+There is one last nice workflow to use which is in the squashing realm. It's called `fixup`.
