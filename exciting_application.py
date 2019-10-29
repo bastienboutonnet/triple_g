@@ -10,7 +10,7 @@ def generate_message(greet):
         start_message = "Hello"
     else:
         start_message = "Goodbye"
-        return f"{start_message} World"
+    return f"{start_message} World"
 
 
 if __name__ == "__main__":
