@@ -1,10 +1,9 @@
 from datetime import datetime
 
 
-def generate_message():
-    greeting_part = "Hello World"
+def parse_time():
     time_part = datetime.now().strftime("%H:%M")
-        return f"{greeting_part}, it is {time_part}"
+        return time_part
 
 
 if __name__ == "__main__":
