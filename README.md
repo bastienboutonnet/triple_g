@@ -276,3 +276,15 @@ s ec86fbb add info about squashing
 
 # Rebase dae892e..ec86fbb onto dae892e (5 commands)
 ```
+If you run `git log --online` again you'll see that all the commits you labelled to be squashed will have disappeared from the history.
+
+If you had already pushed some of the content to your remote branch and run `git status` you may be surprised that Git tells you that you need to `pull` changes from the remote. That's normal because, your remote still has all of these commits but you now have less so Git think's you're not up to date. Time to bring in **the force**.
+
+If you're sure that you want to push your changes you'll want to push with `--force` so that you can overrule the remote that is "ahead" of you:
+```bash
+> git push --force
+```
+**IMPORTANT:** The force should be used cautiously, it should never be used to push to master and you should keep it for a branch that you're working on and not sharing to avoid boo boos. If you're not sure, it's usually fine to ask.
+
+#### Fixup Workflow
+There is one last nice workflow to use which is in the squashing realm. It's called `fixup`.
