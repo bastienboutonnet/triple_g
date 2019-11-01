@@ -286,5 +286,43 @@ If you're sure that you want to push your changes you'll want to push with `--fo
 ```
 **IMPORTANT:** The force should be used cautiously, it should never be used to push to master and you should keep it for a branch that you're working on and not sharing to avoid boo boos. If you're not sure, it's usually fine to ask.
 
-#### Fixup Workflow
+#### Fixup & Autosquash Workflow (Oh shit, fix kinda commits?)
 There is one last nice workflow to use which is in the squashing realm. It's called `fixup`.
+
+Irrespective of how fast a committer you are, if you commit a lot of small code modifications or bigger ones, chances are you'll have committed something that either has a bug, or that is not 100% there yet.
+
+Down the line your commit log might get unnecessarily messy or crowded like so:
+```git
+b5f20d6 implement feature a
+68db6de change json parsing
+3229d61 add feature a in json dict
+7ff55a8 actually add feature into json dict
+d357092 add tests
+```
+As you can see in this snippet, the penultimate commit `7ff55a8` looks like it solves an issue or a shortcoming of the previous one (`3229d61`).
+
+You could decide to clean that up by [**Squashing**](#squash-commits) as we saw in the previous section but there's actually a perfect feature for this type of commits that will make the squashing almost automatic. It's called **fixup!**
+
+Let's say we travel back in time a bit in the snippet above:
+```git
+b5f20d6 implement feature a
+68db6de change json parsing
+3229d61 add feature a in json dict
+```
+At this point you realise you've made a boo boo or need to correct the previous commit. Instead of doing the regular `git add <file>`, `git commit -m <message>`. You could simply do the following:
+```
+git add <file>
+git commit --fixup 3229d61
+```
+Now your git log will look like this:
+```git
+b5f20d6 implement feature a
+68db6de change json parsing
+3229d61 add feature a in json dict
+7ff55a8 fixup! add feature a in json dict
+```
+Ok... but that's still the same amount of commits than you had before... That's right! But here comes `--autosquash`.
+
+```
+git rebase -i --autosquash
+```
