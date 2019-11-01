@@ -322,7 +322,20 @@ b5f20d6 implement feature a
 7ff55a8 fixup! add feature a in json dict
 ```
 Ok... but that's still the same amount of commits than you had before... That's right! But here comes `--autosquash`.
+If you call a rebase (yes it feels a but weird) with the parameters `-i` for "interactive and `--autosquash` for yeah you know it... with the SHA up to which you want to squash (in that case `b5f20d6` being the first commit on the branch).
+```
+git rebase -i --autosquash b5f20d6
+```
+Since we're doing this interactively, git still shows and gives you the opportunity to move things around and squash other commits. But in this case you can just accept and save the file and your git log will be uncluterred.
+```git
+b5f20d6 implement feature a
+68db6de change json parsing
+3229d61 add feature a in json dict
+```
+## Always be automating.
+#### Can all interactive rebases be Autosquash since basically they give me the same level of control as reglar rebases? Yes
+The rebase.autosquash setting will enable this useful little feature for all interactive rebases:
 
 ```
-git rebase -i --autosquash
+git config --global rebase.autosquash true
 ```
